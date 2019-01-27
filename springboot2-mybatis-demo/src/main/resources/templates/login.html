@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>book系统</title>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/demo/demo.css"/>
+    <script type="text/javascript" src="../static/plugins/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/plugins/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../static/plugins/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../static/plugins/js1/public.js"></script>
+    <style>
+        body {
+            background-color:#CCDAF7;
+            background-image:url(../static/plugins/imgs/feimian0.jpg);
+            background-repeat:no-repeat;
+            background-position:top;
+            background-attachment:fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #login{
+            opacity: .95;
+            width: 400px;
+            height: 300px;
+        }
+
+    </style>
+    <script>
+
+        function loginSys() {
+            var loginUrl = "/user/loginPage";
+            $('#loginForm').form('submit',{
+                url: loginUrl ,
+                onSubmit: function(){
+                    return $(this).form('validate');
+                },
+                success: function(result){
+                    var result = eval('('+result+')');
+                    if (result.success){
+                        $.messager.show({
+                            title: 'Success',
+                            msg: '登陆成功'
+                        });
+                        window.location.href = "index";
+                    } else {
+                        $.messager.show({
+                            title: 'Error',
+                            msg: result.msg
+                        });
+                    }
+                }
+            });
+        }
+
+
+
+
+        function clearForm() {
+            $("#loginForm").form('clear');
+        }
+    </script>
+</head>
+<body>
+
+<div class="panel panel-htop" style="margin-top: 10%;">
+    <div id="login" class="easyui-panel panel-body" title="" style="width: 400px;height: 250px">
+        <h1 style="margin-left: 30px;color: #0000FF">BZ图书</h1>
+        <form id="loginForm" action="" method="post">
+            <div style="margin-bottom:20px;margin-left: 40px">
+                <input id="loginCode" class="easyui-textbox" name="loginCode" iconCls='icon-man' label="登陆名:" prompt="Name"  style="width:80%">
+            </div>
+            <div style="margin-bottom:20px;margin-left: 40px">
+                <input id="loginPassword" class="easyui-passwordbox" name="loginPassword" label="密&nbsp;&nbsp;&nbsp;码:" prompt="Password"   style="width:80%">
+            </div>
+            <div style="margin-bottom:20px;margin-left: 40px">
+                <select id="userType" class="easyui-combobox" name="userType" label="角&nbsp;&nbsp;&nbsp;色:" prompt="Type" style="width: 80%;">
+                    <option value="0">普通用户</option>
+                    <option value="1">管理员</option>
+                </select>
+            </div>
+        </form>
+        <div style="text-align:center;padding:5px 0">
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="loginSys()" iconCls="icon-save" style="width:80px">登陆</a>
+            <a href="javascript:void(0)" class="easyui-linkbutton" onclick="clearForm()" iconCls="icon-remove" style="width:80px">重置</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

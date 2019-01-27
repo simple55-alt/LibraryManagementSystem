@@ -1,0 +1,170 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      xmlns:float="http://www.w3.org/1999/xhtml">
+<head>
+    <title>book系统</title>
+    <meta charset="utf-8"></meta>
+    <link rel="stylesheet" href="../static/plugins/css/base.css" />
+    <link rel="stylesheet" href="../static/plugins/css/index.css" />
+    <link rel="stylesheet" type="text/css" href="../static/plugins/css/jquery.dialog.css" />
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/default/easyui.css"/>
+
+</head>
+
+<body>
+<div id="container">
+    <div id="hd">
+        <div class="hd-wrap ue-clear">
+            <div class="top-light"></div>
+            <h1 class="logo"></h1>
+            <div class="login-info ue-clear">
+                <div class="welcome ue-clear" style="width: auto">
+                    <a>&nbsp;欢迎您：&nbsp;<i th:text="${session.userInfo.userNice}"></i></a></div>
+                </div>
+            <div class="toolbar ue-clear">
+                <a href="javascript:;" class="home-btn modify"></a>
+                <a href="javascript:;" class="quit-btn exit"></a>
+            </div>
+        </div>
+    </div>
+    <div id="bd">
+        <div class="wrap ue-clear">
+            <div class="sidebar">
+                <h2 class="sidebar-header"><p>功能面板</p></h2>
+                <ul class="nav">
+                    <li class="system">
+                        <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>系统管理</span><i class="icon"></i></a></div>
+                        <ul class="subnav">
+                            <li><a href="/html/info-mgt"  date-src="/user_infomation">用户管理</a></li>
+                            <li><a href="javascript:;" date-src="/getteacherinfo">个人信息</a></li>
+
+                        </ul>
+                    </li>
+                    <li class="agency">
+                        <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>图书管理</span><i class="icon"></i></a></div>
+                        <ul class="subnav">
+                            <li><a href="javascript:;" date-src="/book_infomation">图书管理</a></li>
+                            <li><a href="javascript:;" date-src="/online_infomation">图书导入</a></li>
+                            <li><a href="javascript:;" date-src="/short_infomation">预警信息</a></li>
+                            <li><a href="javascript:;" date-src="/entry_train">新书推荐</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-info">
+                        <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>借阅管理</span><i class="icon"></i></a></div>
+                        <ul class="subnav">
+                            <li><a href="javascript:;" date-src="/teacher_evaluate">借阅查询</a></li>
+                        </ul>
+                    </li>
+                    <li class="konwledge">
+                        <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>销售管理</span><i class="icon"></i></a></div>
+                        <ul class="subnav">
+                            <li><a href="javascript:;" date-src="/data_query">数据查询</a></li>
+                            <li><a href="javascript:;" date-src="/data_statistics">购物车</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="content">
+                <iframe src="http://www.nwsuaf.edu.cn" id="iframe" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="exitDialog">
+    <div classs="dialog-content">
+        <div class="ui-dialog-icon">
+        </div>
+        <div class="ui-dialog-text">
+            <p class="dialog-content">你确定要退出系统？</p>
+            <p class="tips">如果是请点击“确定”，否则点“取消”</p>
+
+            <div class="buttons">
+                <input type="button" class="button long2 ok" value="确定" />
+                <input type="button" class="button long2 normal" value="取消" />
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modifyPassword">
+    <div classs="dialog-content">
+        <div class="ui-dialog-icon">
+        </div>
+        <div class="ui-dialog-text">
+            <form action="modifypassword" method="post">
+                <table align="center" width="280px" style="height:180px; text-align:center;">
+                    <tr>
+                        <td >初始密码：</td>
+                        <td><input type="password" name="oldpassword"></input></td>
+                    </tr>
+                    <tr>
+                        <td>新密码：</td>
+                        <td><input type="password" name="newpassword1"></input></td>
+                    </tr>
+                    <tr>
+                        <td>再次输入：</td>
+                        <td><input type="password" name="newpassword2"></input></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;"><input type="submit" name="" value="确定" align="center" onclick="document.getElementById('light').style.display='block';"></input></td>
+                        <td style="text-align:center;"><input type="button" name="" value="关闭" onclick="document.getElementById('light').style.display='none';"></input></td>
+                    </tr>
+                </table>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../static/plugins/js/jquery.js"></script>
+<script type="text/javascript" src="../static/plugins/js/common.js"></script>
+<script type="text/javascript" src="../static/plugins/js/core.js"></script>
+<script type="text/javascript" src="../static/plugins/js/jquery.dialog.js"></script>
+<script type="text/javascript" src="../static/plugins/js/index.js"></script>
+<script type="text/javascript" src="../static/plugins/easyui/jquery.easyui.min.js"></script>
+<script>
+
+    $('.modify').click(function () {
+        $('.modifyPassword').Dialog('open');
+    });
+    $('.modifyPassword').Dialog({
+        title:'修改密码',
+        autoOpen: false,
+        width:400,
+        height:200
+
+    });
+
+    $('.modifyPassword input[type=button]').click(function(e) {
+        $('.modifyPassword').Dialog('close');
+
+        if($(this).hasClass('ok')){
+            window.location.href = "exit";
+        }
+    });
+
+    $('.exit').click(function(){
+        $('.exitDialog').Dialog('open');
+    });
+
+    $('.exitDialog').Dialog({
+        title:'提示信息',
+        autoOpen: false,
+        width:400,
+        height:200
+
+    });
+
+    $('.exitDialog input[type=button]').click(function(e) {
+        $('.exitDialog').Dialog('close');
+
+        if($(this).hasClass('ok')){
+            window.location.href = "exit";
+        }
+    });
+</script>

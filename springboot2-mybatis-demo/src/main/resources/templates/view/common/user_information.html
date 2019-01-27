@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/demo/demo.css"/>
+    <script type="text/javascript" src="../static/plugins/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/plugins/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../static/plugins/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../static/plugins/js1/public.js"></script>
+    <script type="text/javascript" src="../static/plugins/js1/manageruser.js"></script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north'" style="width: 100%;height: 25%">
+        <div class="easyui-panel" title="高级查询" style="width:100%;height: 100%">
+            <form id="searchForm" method="post">
+                <table cellpadding="3">
+                    <tr>
+                        <td>昵称:</td>
+                        <td><input class="easyui-textbox" type="text" name="userNice"></input></td>
+
+                        <td>邮箱:</td>
+                        <td><input class="easyui-textbox" type="text" name="userEmail"></input></td>
+
+                        <td>手机号:</td>
+                        <td><input class="easyui-textbox" type="text" name="userPhone"></input></td>
+                    </tr>
+                    <tr>
+                        <td>是否管理员:</td>
+                        <td>
+                            <select class="easyui-combobox" name="userType" style="width: 172px">
+                                <option value="-1">--请选择--</option>
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </td>
+
+                        <td>时间:</td>
+                        <td>
+                            <input class="easyui-datebox" id="beginTime" name="beginTime" data-options="editable:false" style="width: 100px"/>
+                            <span style="color:#0C7BE3">到</span>
+                            <input class="easyui-datebox" id="endTime" name="endTime" data-options="editable:false,disabled:true,validType:'equaldDate[\'#beginTime\']'" style="width: 100px"/>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:right;padding-right:25px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitForm()">查询</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-clear" onclick="clearForm()">清空</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-options="region:'center',title:'用户列表'">
+        <table id="datagrid"  class="easyui-datagrid" style="width:100%;height:100%" toolbar="#dgtoolbar">
+            <thead>
+                <tr></tr>
+            </thead>
+        </table>
+        <div id="dgtoolbar">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newUsers()">添加用户</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeUsers()">删除用户</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editUsers()">修改信息</a>
+        </div>
+
+    </div>
+</div>
+<!--</div>-->
+
+<div id="modifydg" class="easyui-dialog" style="width:450px;height:300px;padding:10px 20px"
+     closed="true" buttons="#modifydg-buttons">
+    <form id="fim" method="post" >
+
+        <input name="id" label="id:" prompt="id" required="true" style="width:80%" type="hidden">
+
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="userNice" label="昵称:" prompt="name" required="true" data-options="validType:'loginName'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <!--<div style="margin-bottom:10px">-->
+            <!--<input class="easyui-passwordbox" name="loginPassword" label="密码:" prompt="Password" required="true" data-options="validType:'englishOrNum'" missingMessage="该输入项为必输项" style="width:80%">-->
+        <!--</div>-->
+        <div style="margin-bottom:10px">
+            <input class="easyui-numberbox" name="userPhone" label="手机号:" prompt="phone" required="true" data-options="validType:'mobile'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="userEmail" label="邮箱:" prompt="email" required="true" data-options="validType:'email'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:30px">
+            <label class="textbox-label">是否管理员:</label>
+            <input class="easyui-switchbutton" data-options="onText:'是',offText:'否'" value ='1' name="userType">
+        </div>
+    </form>
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveUsers()" iconCls="icon-ok" style="width:80px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#modifydg').dialog('close')" iconCls="icon-cancel" style="width:80px">取消</a>
+    </div>
+</div>
+
+
+<div id="adddg" class="easyui-dialog" style="width:450px;height:330px;padding:10px 20px"
+     closed="true" buttons="#adddg-buttons">
+    <form id="fam" method="post" >
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="userNice" label="昵称:" prompt="name" required="true" data-options="validType:'loginName'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input id="loginPassword" class="easyui-passwordbox" name="loginPassword" label="密码:" prompt="Password" required="true" data-options="validType:'englishOrNum'" missingMessage="该输入项为必输项"  style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-passwordbox" name="loginPasswordSure" label="确认密码:" prompt="Password" required="true" data-options="validType:'equalTo[\'#loginPassword\']'" missingMessage="该输入项为必输项"  style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-numberbox" name="userPhone" label="手机号:" prompt="phone" required="true" data-options="validType:'mobile'" missingMessage="该输入项为必输项"  style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="userEmail" label="邮箱:" prompt="email" required="true" data-options="validType:'email'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:30px">
+            <label class="textbox-label">是否管理员:</label>
+            <input class="easyui-switchbutton" data-options="onText:'是',offText:'否'" value ='1'  name="userType">
+        </div>
+    </form>
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addUsers()" iconCls="icon-ok" style="width:80px">添加</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#adddg').dialog('close')" iconCls="icon-cancel" style="width:80px">取消</a>
+    </div>
+</div>
+
+</body>
+</html>

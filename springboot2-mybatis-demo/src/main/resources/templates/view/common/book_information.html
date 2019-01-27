@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="zh_CN">
+<head>
+    <meta charset="UTF-8">
+    <title>用户列表</title>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/themes/icon.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/plugins/easyui/demo/demo.css"/>
+    <script type="text/javascript" src="../static/plugins/easyui/jquery.min.js"></script>
+    <script type="text/javascript" src="../static/plugins/easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript" src="../static/plugins/easyui/easyui-lang-zh_CN.js"></script>
+    <script type="text/javascript" src="../static/plugins/js1/public.js"></script>
+    <script type="text/javascript" src="../static/plugins/js1/managerbook.js"></script>
+</head>
+<body>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'north'" style="width: 100%;height: 25%">
+        <div class="easyui-panel" title="高级查询" style="width:100%;height: 100%">
+            <form id="searchForm" method="post">
+                <table cellpadding="3">
+                    <tr>
+                        <td>编码:</td>
+                        <td><input class="easyui-textbox" type="text" name="bookCode"></input></td>
+
+                        <td>书名:</td>
+                        <td><input class="easyui-textbox" type="text" name="bookName"></input></td>
+
+                        <td>作者:</td>
+                        <td><input class="easyui-textbox" type="text" name="bookAuthor"></input></td>
+                    </tr>
+                    <tr>
+                        <td>是否折扣:</td>
+                        <td>
+                            <select class="easyui-combobox" name="bookDisFlag" style="width: 172px">
+                                <option value="-1">--请选择--</option>
+                                <option value="0">否</option>
+                                <option value="1">是</option>
+                            </select>
+                        </td>
+                        <td>类别:</td>
+                        <td><input id="book_type_search" class="easyui-combobox" name="bookType" style="width:172px"/></td>
+                        <td>添加时间:</td>
+                        <td>
+                            <input class="easyui-datebox" id="beginTime" name="beginTime" data-options="editable:false" style="width: 100px"/>
+                            <span style="color:#0C7BE3">到</span>
+                            <input class="easyui-datebox" id="endTime" name="endTime" data-options="editable:false,disabled:true,validType:'equaldDate[\'#beginTime\']'" style="width: 100px"/>
+                        </td>
+
+                    </tr>
+                </table>
+            </form>
+            <div style="text-align:right;padding-right:25px">
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="submitForm()">查询</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-clear" onclick="clearForm()">清空</a>
+            </div>
+        </div>
+    </div>
+
+    <div data-options="region:'center',title:'图书列表'">
+        <table id="datagrid"  class="easyui-datagrid" style="width:100%;height:100%" toolbar="#dgtoolbar">
+            <thead>
+                <tr></tr>
+            </thead>
+        </table>
+        <div id="dgtoolbar">
+            <a href="#" class="easyui-linkbutton" iconCls="icon-add" plain="true" onclick="newBooks()">添加图书</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-remove" plain="true" onclick="removeBooks()">删除图书</a>
+            <a href="#" class="easyui-linkbutton" iconCls="icon-edit" plain="true" onclick="editBooks()">修改图书</a>
+        </div>
+
+    </div>
+</div>
+<!--</div>-->
+
+<div id="modifydg" class="easyui-dialog" style="width:500px;height:370px;padding:10px 20px"
+     closed="true" buttons="#modifydg-buttons">
+    <form id="fim" method="post" >
+
+        <input name="id" label="id:" prompt="id" required="true" style="width:80%" type="hidden">
+
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookCode" label="编码:" prompt="code"  disabled="disabled" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookName" label="书名:" prompt="name" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input id="book_type_edit" class="easyui-combobox" name="bookType" label="类别:" prompt="type" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookAuthor" label="作者:" prompt="author" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookAddr" label="书架:" prompt="addr" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookAmount" label="价格:" prompt="price" required="true" data-options="validType:'money'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:30px">
+            <label class="textbox-label">是否折扣:</label>
+            <input class="easyui-switchbutton" data-options="onText:'是',offText:'否'" value ='1' name="bookDisFlag">
+        </div>
+    </form>
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="saveBooks()" iconCls="icon-ok" style="width:80px">保存</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#modifydg').dialog('close')" iconCls="icon-cancel" style="width:80px">取消</a>
+    </div>
+</div>
+
+
+<div id="adddg" class="easyui-dialog" style="width:500px;height:370px;padding:10px 20px"
+     closed="true" buttons="#adddg-buttons">
+    <form id="fam" method="post" >
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookCode" label="编码:" prompt="code"  disabled="disabled" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookName" label="书名:" prompt="name" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项"  style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input id="book_type_add" class="easyui-combobox" name="bookType" label="类别:" prompt="type" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项"  style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookAuthor" label="作者:" prompt="author" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookAddr" label="书架:" prompt="addr" required="true" data-options="validType:'NotEmpty'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:10px">
+            <input class="easyui-textbox" name="bookAmount" label="价格:" prompt="price" required="true" data-options="validType:'money'" missingMessage="该输入项为必输项" style="width:80%">
+        </div>
+        <div style="margin-bottom:30px">
+            <label class="textbox-label">是否折扣:</label>
+            <input class="easyui-switchbutton" data-options="onText:'是',offText:'否'" value ='1'  name="bookDisFlag">
+        </div>
+    </form>
+    <div style="text-align:center;padding:5px 0">
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="addBooks()" iconCls="icon-ok" style="width:80px">添加</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" onclick="javascript:$('#adddg').dialog('close')" iconCls="icon-cancel" style="width:80px">取消</a>
+    </div>
+</div>
+
+</body>
+</html>

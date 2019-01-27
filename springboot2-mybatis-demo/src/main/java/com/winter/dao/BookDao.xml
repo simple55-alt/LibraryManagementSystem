@@ -1,0 +1,365 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winter.dao.BookDao" >
+    <resultMap id="BaseResultMap" type="SysBook">
+        <!-- id属性来映射主键字段 -->
+        <id column="id" property="id" javaType="Integer"/>
+        <!-- result属性映射非主键字段 -->
+        <result column="book_code" property="bookCode" javaType="String"/>
+        <result column="book_name" property="bookName" javaType="String"/>
+        <result column="book_type" property="bookType" javaType="String"/>
+        <result column="book_author" property="bookAuthor" javaType="String"/>
+        <result column="book_addr" property="bookAddr" javaType="String"/>
+        <result column="book_amount" property="bookAmount" javaType="BigDecimal"/>
+        <result column="book_dis_flag" property="bookDisFlag" javaType="Integer"/>
+        <result column="book_state" property="bookState" javaType="Integer"/>
+        <result column="delete_flag" property="deleteFlag" javaType="Integer"/>
+        <result column="add_time" property="addTime" javaType="java.sql.Timestamp"/>
+        <result column="add_by" property="addBy" javaType="String"/>
+        <result column="last_time" property="lastTime" javaType="java.sql.Timestamp"/>
+        <result column="last_by" property="lastBy" javaType="String"/>
+
+
+        <association property="sysCode" column="book_type" select="getBookType"/>
+
+    </resultMap>
+
+
+    <resultMap id="BaseResultMap2" type="SysCode">
+        <!-- id属性来映射主键字段 -->
+        <id column="id" property="id" javaType="Integer"/>
+        <!-- result属性映射非主键字段 -->
+        <result column="code_id" property="codeId" javaType="String"/>
+        <result column="code_text" property="codeText" javaType="String"/>
+        <result column="code_parent_id" property="codeParentId" javaType="String"/>
+        <result column="code_key" property="codeKey" javaType="String"/>
+        <result column="code_state" property="codeState" javaType="Integer"/>
+        <result column="add_time" property="addTime" javaType="java.sql.Timestamp"/>
+        <result column="add_by" property="addBy" javaType="String"/>
+        <result column="last_time" property="lastTime" javaType="java.sql.Timestamp"/>
+        <result column="last_by" property="lastBy" javaType="String"/>
+    </resultMap>
+
+    <sql id="BASE_TABLE">
+        sys_book
+    </sql>
+
+    <sql id="BASE_COLUMN">
+        id,
+        book_code,
+        book_name,
+        book_type,
+        book_author,
+        book_addr,
+        book_amount,
+        book_dis_flag,
+        book_state,
+        delete_flag,
+        add_time,
+        add_by,
+        last_time,
+        last_by
+    </sql>
+
+    <insert id="insert" parameterType="com.winter.model.SysBook">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="bookCode != null">
+                book_code,
+            </if>
+            <if test="bookName != null">
+                book_name,
+            </if>
+            <if test="bookType != null">
+                book_type,
+            </if>
+            <if test="bookAuthor != null">
+                book_author,
+            </if>
+            <if test="bookAddr != null">
+                book_addr,
+            </if>
+            <if test="bookAmount != null">
+                book_amount,
+            </if>
+            <if test="bookDisFlag != null">
+                book_dis_flag,
+            </if>
+            <if test="bookState != null">
+                book_state,
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="addBy != null">
+                add_by,
+            </if>
+            <if test="lastTime != null">
+                last_time,
+            </if>
+            <if test="lastBy != null">
+                last_by
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="bookCode != null">
+                #{bookCode, jdbcType=VARCHAR},
+            </if>
+            <if test="bookName != null">
+                #{bookName, jdbcType=VARCHAR},
+            </if>
+            <if test="bookType != null">
+                #{bookType, jdbcType=VARCHAR},
+            </if>
+            <if test="bookAuthor != null">
+                #{bookAuthor, jdbcType=VARCHAR},
+            </if>
+            <if test="bookAddr != null">
+                #{bookAddr, jdbcType=VARCHAR},
+            </if>
+            <if test="bookAmount != null">
+                #{bookAmount, jdbcType=DOUBLE},
+            </if>
+            <if test="bookDisFlag != null">
+                #{bookDisFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="bookState != null">
+                #{bookState, jdbcType=INTEGER},
+            </if>
+            <if test="deleteFlag != null">
+                #{deleteFlag, jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                #{addTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="addBy != null">
+                #{addBy, jdbcType=VARCHAR},
+            </if>
+            <if test="lastTime != null">
+                #{lastTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastBy != null">
+                #{lastBy, jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+    <!--<select id="selectAllByKeyTwo" resultType="java.util.HashMap" parameterType="java.util.HashMap">-->
+        <!--select a.*,b.code_text from  sys_book a-->
+        <!--left join sys_code b on a.book_type = b.code_id-->
+    <!--</select>-->
+
+    <select id="selectAllByKey" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="bookCode != null and bookCode != ''">
+                and book_code = #{bookCode, jdbcType=VARCHAR}
+            </if>
+            <if test="bookName != null and bookName != ''">
+                and book_name like concat(concat('%',#{bookName, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="bookType != null and bookType != ''">
+                and book_type = #{bookType, jdbcType=VARCHAR}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != ''">
+                and book_author = #{bookAuthor, jdbcType=VARCHAR}
+            </if>
+            <if test="bookAddr != null and bookAddr != ''">
+                and book_addr like concat(concat('%',#{bookAddr, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="bookAmount != null and bookAmount != ''">
+                and book_amount = #{bookAmount, jdbcType=DOUBLE}
+            </if>
+            <if test="bookDisFlag != null and bookDisFlag != ''">
+                and book_dis_flag = #{bookDisFlag, jdbcType=VARCHAR}
+            </if>
+            <if test="bookState != null">
+                and book_state = #{bookState, jdbcType=INTEGER}
+            </if>
+            <if test="deleteFlag != null">
+                and delete_flag =  #{deleteFlag, jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != ''">
+                and add_time =  #{addTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="addBy != null and addBy != ''">
+                and add_by =  #{addBy, jdbcType=VARCHAR}
+            </if>
+            <if test="lastBy != null and lastBy != ''">
+                and last_by = #{lastBy, jdbcType=INTEGER}
+            </if>
+            <if test="lastTime != null and lastTime != ''">
+                and last_time = #{lastTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginTime != null and beginTime != '' and endTime!=null and endTime != ''">
+                and add_time between
+                date_format(#{beginTime}, '%Y-%c-%d 00:00:01')
+                and
+                date_format(#{endTime}, '%Y-%c-%d 23:59:59')
+            </if>
+        </where>
+    </select>
+
+    <select id="getBookType" parameterType="string" resultMap="BaseResultMap2">
+         SELECT * FROM sys_code WHERE code_id=#{book_type}
+     </select>
+
+
+    <select id="selectOneByKey" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="bookCode != null and bookCode != ''">
+                and book_code = #{bookCode, jdbcType=VARCHAR}
+            </if>
+            <if test="bookName != null and bookName != ''">
+                and book_name = #{bookName, jdbcType=VARCHAR}
+            </if>
+            <if test="bookType != null and bookType != ''">
+                and book_type = #{bookType, jdbcType=VARCHAR}
+            </if>
+            <if test="bookAuthor != null and bookAuthor != ''">
+                and book_author = #{bookAuthor, jdbcType=VARCHAR}
+            </if>
+            <if test="bookAddr != null and bookAddr != ''">
+                and book_addr = #{bookAddr, jdbcType=VARCHAR}
+            </if>
+            <if test="bookAmount != null and bookAmount != ''">
+                and book_amount = #{bookAmount, jdbcType=DOUBLE}
+            </if>
+            <if test="bookDisFlag != null and bookDisFlag != ''">
+                and book_dis_flag = #{bookDisFlag, jdbcType=VARCHAR}
+            </if>
+            <if test="bookState != null">
+                and book_state = #{bookState, jdbcType=INTEGER}
+            </if>
+            <if test="deleteFlag != null">
+                and delete_flag =  #{deleteFlag, jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != ''">
+                and add_time =  #{addTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="addBy != null and addBy != ''">
+                and add_by =  #{addBy, jdbcType=VARCHAR}
+            </if>
+            <if test="lastBy != null and lastBy != ''">
+                and last_by = #{lastBy, jdbcType=INTEGER}
+            </if>
+            <if test="lastTime != null and lastTime != ''">
+                and last_time = #{lastTime, jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="updateOneByKey" parameterType="com.winter.model.SysBook" >
+        update
+        <include refid="BASE_TABLE"/>
+        <set >
+            <if test="bookName != null">
+                book_name = #{bookName, jdbcType=VARCHAR},
+            </if>
+            <if test="bookType != null">
+                book_type = #{bookType, jdbcType=VARCHAR},
+            </if>
+            <if test="bookAuthor != null">
+                book_author = #{bookAuthor, jdbcType=VARCHAR},
+            </if>
+            <if test="bookAddr != null">
+                book_addr = #{bookAddr, jdbcType=VARCHAR},
+            </if>
+            <if test="bookAmount != null">
+                book_amount = #{bookAmount, jdbcType=DOUBLE},
+            </if>
+            <if test="bookDisFlag != null">
+                book_dis_flag = #{bookDisFlag, jdbcType=VARCHAR},
+            </if>
+            <if test="bookState != null">
+                book_state = #{bookState, jdbcType=INTEGER},
+            </if>
+            <if test="deleteFlag != null">
+                delete_flag =  #{deleteFlag, jdbcType=INTEGER},
+            </if>
+            <if test="lastBy != null">
+                last_by = #{lastBy, jdbcType=INTEGER},
+            </if>
+            <if test="lastTime != null">
+                last_time = #{lastTime, jdbcType=TIMESTAMP},
+            </if>
+
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="bookCode != null">
+                and book_code = #{bookCode, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+
+
+    <!--批量更新-->
+    <update id="updateBatch"  parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update
+            <include refid="BASE_TABLE"/>
+            <set >
+                <if test="item.bookName != null">
+                    book_name = #{item.bookName, jdbcType=VARCHAR},
+                </if>
+                <if test="item.bookType != null">
+                    book_type = #{item.bookType, jdbcType=VARCHAR},
+                </if>
+                <if test="item.bookAuthor != null">
+                    book_author = #{item.bookAuthor, jdbcType=VARCHAR},
+                </if>
+                <if test="item.bookAddr != null">
+                    book_addr = #{item.bookAddr, jdbcType=VARCHAR},
+                </if>
+                <if test="item.bookAmount != null">
+                    book_amount = #{item.bookAmount, jdbcType=DOUBLE},
+                </if>
+                <if test="item.bookDisFlag != null">
+                    book_dis_flag = #{item.bookCode, jdbcType=VARCHAR},
+                </if>
+                <if test="item.bookState != null">
+                    book_state = #{item.bookState, jdbcType=INTEGER},
+                </if>
+                <if test="item.deleteFlag != null">
+                    delete_flag =  #{item.deleteFlag, jdbcType=INTEGER},
+                </if>
+                <if test="item.lastBy != null">
+                    last_by = #{item.lastBy, jdbcType=INTEGER},
+                </if>
+                <if test="item.lastTime != null">
+                    last_time = #{item.lastTime, jdbcType=TIMESTAMP},
+                </if>
+            </set>
+            <where>
+                <if test="item.id != null">
+                    id = #{item.id, jdbcType=INTEGER}
+                </if>
+                <if test="item.bookCode != null">
+                    and book_code = #{item.bookCode, jdbcType=VARCHAR}
+                </if>
+            </where>
+        </foreach>
+    </update>
+</mapper>

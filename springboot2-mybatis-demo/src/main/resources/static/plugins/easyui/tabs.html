@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Basic Tabs - jQuery EasyUI Demo</title>
+    <link rel="stylesheet" type="text/css" href="easyui/themes/default/easyui.css"/>
+    <link rel="stylesheet" type="text/css" href="easyui/themes/icon.css"/>
+    <!--<link rel="stylesheet" type="text/css" href="easyui/demo/demo.css"/>-->
+    <script type="text/javascript" src="easyui/jquery.min.js"/>
+    <script type="text/javascript" src="easyui/jquery.easyui.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#tt').tabs('resize',{
+                plain : false,
+                boder : false,
+                width:$(window).width()-18,
+                height: $(window).height()-18
+            });
+        });
+    </script>
+</head>
+<body>
+<div id="tt" class="easyui-tabs" tabHeight="35">
+    <div title="About"  style="padding:10px" >
+        <p style="font-size:14px">jQuery EasyUI framework helps you build your web pages easily.</p>
+        <ul>
+            <li>easyui is a collection of user-interface plugin based on jQuery.</li>
+            <li>easyui provides essential functionality for building modem, interactive, javascript applications.</li>
+            <li>using easyui you don't need to write many javascript code, you usually defines user-interface by writing some HTML markup.</li>
+            <li>complete framework for HTML5 web page.</li>
+            <li>easyui save your time and scales while developing your products.</li>
+            <li>easyui is very easy but powerful.</li>
+        </ul>
+    </div>
+    <div title="提升培训" style="padding:10px">
+        <ul>
+            <table class="easyui-datagrid"
+                   data-options="singleSelect:true,collapsible:true,url:'/teacher_enchangetrain',method:'get'">
+                <thead>
+                <tr>
+                    <th data-options="field:'trainNo', align:'center',width:'7%'" >培训编号</th>
+                    <th data-options="field:'trainName', align:'center',width:'13%'">培训名称</th>
+                    <th data-options="field:'numbering',align:'center',width:'13%'" >培训编号</th>
+                    <th data-options="field:'name',align:'center',width:'28%'" >名称</th>
+                    <th data-options="field:'enchange_train_url',align:'center'"  >通知网址</th>
+                </tr>
+                </thead>
+            </table>
+        </ul>
+    </div>
+    <div title="Help" data-options="iconCls:'icon-help',closable:true" style="padding:10px">
+        This is the help content.
+    </div>
+</div>
+</body>
+</html>

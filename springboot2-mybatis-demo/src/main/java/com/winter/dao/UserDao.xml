@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winter.dao.UserDao" >
+    <resultMap id="BaseResultMap" type="SysUser">
+        <!-- id属性来映射主键字段 -->
+        <id column="id" property="id" javaType="int"/>
+        <!-- result属性映射非主键字段 -->
+        <result column="user_id" property="userId" javaType="String"/>
+        <result column="user_nice" property="userNice" javaType="String"/>
+        <result column="user_name" property="userName" javaType="String"/>
+        <result column="user_card" property="userCard" javaType="String"/>
+        <result column="user_phone" property="userPhone" javaType="String"/>
+        <result column="user_email" property="userEmail" javaType="String"/>
+        <result column="login_code" property="loginCode" javaType="String"/>
+        <result column="login_password" property="loginPassword" javaType="String"/>
+        <result column="user_type" property="userType" javaType="Integer"/>
+        <result column="user_level" property="userLevel" javaType="Integer"/>
+        <result column="user_credit" property="userCredit" javaType="String"/>
+        <result column="user_state" property="userState" javaType="Integer"/>
+        <result column="add_time" property="addTime" javaType="java.sql.Timestamp"/>
+        <result column="add_by" property="addBy" javaType="String"/>
+        <result column="last_time" property="lastTime" javaType="java.sql.Timestamp"/>
+        <result column="last_by" property="lastBy" javaType="String"/>
+    </resultMap>
+
+    <sql id="BASE_TABLE">
+        sys_user
+    </sql>
+
+    <sql id="BASE_COLUMN">
+        id,
+        user_id,
+        user_nice,
+        user_name,
+        user_card,
+        user_phone,
+        user_email,
+        login_code,
+        login_password,
+        user_type,
+        user_level,
+        user_credit,
+        user_state,
+        add_time,
+        add_by,
+        last_time,
+        last_by
+    </sql>
+
+    <insert id="insert" parameterType="com.winter.model.SysUser">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+            user_id,
+            </if>
+            <if test="userNice != null">
+            user_nice,
+            </if>
+            <if test="userName != null">
+            user_name,
+            </if>
+            <if test="userCard != null">
+            user_card,
+            </if>
+            <if test="userPhone != null">
+            user_phone,
+            </if>
+            <if test="userEmail != null">
+            user_email,
+            </if>
+            <if test="loginCode != null">
+            login_code,
+            </if>
+            <if test="loginPassword != null">
+            login_password,
+            </if>
+            <if test="userType != null">
+            user_type,
+            </if>
+            <if test="userLevel != null">
+            user_level,
+            </if>
+            <if test="userCredit != null">
+            user_credit,
+            </if>
+            <if test="userState != null">
+            user_state,
+            </if>
+            <if test="addTime != null">
+            add_time,
+            </if>
+            <if test="addBy != null">
+            add_by,
+            </if>
+            <if test="lastTime != null">
+            last_time,
+            </if>
+            <if test="lastBy != null">
+            last_by
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="userId != null">
+                #{userId, jdbcType=VARCHAR},
+            </if>
+            <if test="userNice != null">
+                #{userNice, jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                #{userName, jdbcType=VARCHAR},
+            </if>
+            <if test="userCard != null">
+                #{userCard, jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                #{userPhone, jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                #{userEmail, jdbcType=VARCHAR},
+            </if>
+            <if test="loginCode != null">
+                #{loginCode, jdbcType=VARCHAR},
+            </if>
+            <if test="loginPassword != null">
+                #{loginPassword, jdbcType=VARCHAR},
+            </if>
+            <if test="userType != null">
+                #{userType, jdbcType=INTEGER},
+            </if>
+            <if test="userLevel != null">
+                #{userLevel, jdbcType=INTEGER},
+            </if>
+            <if test="userCredit != null">
+                #{userCredit, jdbcType=VARCHAR},
+            </if>
+            <if test="userState != null">
+                #{userState, jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                #{addTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="addBy != null">
+                #{addBy, jdbcType=VARCHAR},
+            </if>
+            <if test="lastTime != null">
+                #{lastTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastBy != null">
+                #{lastBy, jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectAllByKey" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            <if test="id != null">
+                 id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId, jdbcType=VARCHAR}
+            </if>
+            <if test="userNice != null and userNice != ''">
+                and user_nice like concat(concat('%',#{userNice, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName, jdbcType=VARCHAR}
+            </if>
+            <if test="userCard != null and userCard != ''">
+                and user_card = #{userCard, jdbcType=VARCHAR}
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                and user_phone like concat(concat('%',#{userPhone, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                and user_email like concat(concat('%',#{userEmail, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="loginCode != null and loginCode != ''">
+                and login_code = #{userId, jdbcType=VARCHAR}
+            </if>
+            <if test="loginPassword != null and loginPassword != ''">
+                and login_password = #{loginPassword, jdbcType=VARCHAR}
+            </if>
+            <if test="userType != null and userType != -1">
+                and user_type = #{userType, jdbcType=INTEGER}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel, jdbcType=INTEGER}
+            </if>
+            <if test="userCredit != null and userCredit != ''">
+                and user_credit = #{userCredit, jdbcType=VARCHAR}
+            </if>
+            <if test="userState != null">
+                and user_state = #{userState, jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != ''">
+                and add_time =  #{addTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="addBy != null and addBy != ''">
+                and add_by =  #{addBy, jdbcType=VARCHAR}
+            </if>
+            <if test="lastBy != null and lastBy != ''">
+                and last_by = #{lastBy, jdbcType=INTEGER}
+            </if>
+            <if test="lastTime != null and lastTime != ''">
+                and last_time = #{lastTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginTime != null and beginTime != '' and endTime!=null and endTime != ''">
+                and add_time between
+                date_format(#{beginTime}, '%Y-%c-%d 00:00:01')
+                 and
+                date_format(#{endTime}, '%Y-%c-%d 23:59:59')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOneByKey" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="userId != null and userId != ''">
+                and user_id = #{userId, jdbcType=VARCHAR}
+            </if>
+            <if test="userNice != null and userNice != ''">
+                and user_nice = #{userNice, jdbcType=VARCHAR}
+            </if>
+            <if test="userName != null and userName != ''">
+                and user_name = #{userName, jdbcType=VARCHAR}
+            </if>
+            <if test="userCard != null and userCard != ''">
+                and user_card = #{userCard, jdbcType=VARCHAR}
+            </if>
+            <if test="userPhone != null and userPhone != ''">
+                and user_phone = #{userPhone, jdbcType=VARCHAR}
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                and user_email = #{userEmail, jdbcType=VARCHAR}
+            </if>
+            <if test="loginCode != null and loginCode != ''">
+                and login_code = #{loginCode, jdbcType=VARCHAR}
+            </if>
+            <if test="loginPassword != null and loginPassword != ''">
+                and login_password = #{loginPassword, jdbcType=VARCHAR}
+            </if>
+            <if test="userType != null and userType != -1">
+                and user_type = #{userType, jdbcType=INTEGER}
+            </if>
+            <if test="userLevel != null">
+                and user_level = #{userLevel, jdbcType=INTEGER}
+            </if>
+            <if test="userCredit != null and userCredit != ''">
+                and user_credit = #{userCredit, jdbcType=VARCHAR}
+            </if>
+            <if test="userState != null">
+                and user_state = #{userState, jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != ''">
+                and add_time =  #{addTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="addBy != null and addBy != ''">
+                and add_by =  #{addBy, jdbcType=VARCHAR}
+            </if>
+            <if test="lastBy != null and lastBy != ''">
+                and last_by = #{lastBy, jdbcType=INTEGER}
+            </if>
+            <if test="lastTime != null and lastTime != ''">
+                and last_time = #{lastTime, jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="updateOneByKey" parameterType="com.winter.model.SysUser" >
+        update
+        <include refid="BASE_TABLE"/>
+        <set >
+            <if test="userNice != null">
+                user_nice = #{userNice, jdbcType=VARCHAR},
+            </if>
+            <if test="userName != null">
+                user_name = #{userName, jdbcType=VARCHAR},
+            </if>
+            <if test="userCard != null">
+                user_card = #{userCard, jdbcType=VARCHAR},
+            </if>
+            <if test="userPhone != null">
+                user_phone = #{userPhone, jdbcType=VARCHAR},
+            </if>
+            <if test="userEmail != null">
+                user_email = #{userEmail, jdbcType=VARCHAR},
+            </if>
+            <if test="loginCode != null">
+                login_code = #{loginCode, jdbcType=VARCHAR},
+            </if>
+            <if test="loginPassword != null">
+                login_password = #{loginPassword, jdbcType=VARCHAR},
+            </if>
+            <if test="userType != null">
+                user_type = #{userType, jdbcType=INTEGER},
+            </if>
+            <if test="userLevel != null">
+                user_level = #{userLevel, jdbcType=INTEGER},
+            </if>
+            <if test="userCredit != null">
+                user_credit = #{userCredit, jdbcType=VARCHAR},
+            </if>
+            <if test="userState != null">
+                user_state = #{userState, jdbcType=INTEGER},
+            </if>
+            <if test="lastBy != null">
+                last_by = #{lastBy, jdbcType=INTEGER},
+            </if>
+            <if test="lastTime != null">
+                last_time = #{lastTime, jdbcType=TIMESTAMP},
+            </if>
+
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="userId != null">
+               and user_id = #{userId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+
+
+    <!--批量更新-->
+    <update id="updateBatch"  parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update
+            <include refid="BASE_TABLE"/>
+            <set >
+                <if test="item.userNice != null">
+                    user_nice = #{item.userNice, jdbcType=VARCHAR},
+                </if>
+                <if test="item.userName != null">
+                    user_name = #{item.userName, jdbcType=VARCHAR},
+                </if>
+                <if test="item.userCard != null">
+                    user_card = #{item.userCard, jdbcType=VARCHAR},
+                </if>
+                <if test="item.userPhone != null">
+                    user_phone = #{item.userPhone, jdbcType=VARCHAR},
+                </if>
+                <if test="item.userEmail != null">
+                    user_email = #{item.userEmail, jdbcType=VARCHAR},
+                </if>
+                <if test="item.loginCode != null">
+                    login_code = #{item.userId, jdbcType=VARCHAR},
+                </if>
+                <if test="item.loginPassword != null">
+                    login_password = #{item.loginPassword, jdbcType=VARCHAR},
+                </if>
+                <if test="item.userType != null">
+                    user_type = #{item.userType, jdbcType=INTEGER},
+                </if>
+                <if test="item.userLevel != null">
+                    user_level = #{item.userLevel, jdbcType=INTEGER},
+                </if>
+                <if test="item.userCredit != null">
+                    user_credit = #{item.userCredit, jdbcType=VARCHAR},
+                </if>
+                <if test="item.userState != null">
+                    user_state = #{item.userState, jdbcType=INTEGER},
+                </if>
+                <if test="item.lastBy != null">
+                    last_by = #{item.lastBy, jdbcType=INTEGER},
+                </if>
+                <if test="item.lastTime != null">
+                    last_time = #{item.lastTime, jdbcType=TIMESTAMP},
+                </if>
+            </set>
+            <where>
+                <if test="item.id != null">
+                    id = #{item.id, jdbcType=INTEGER}
+                </if>
+                <if test="item.userId != null">
+                    and user_id = #{item.userId, jdbcType=VARCHAR}
+                </if>
+            </where>
+        </foreach>
+    </update>
+</mapper>

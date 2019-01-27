@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.winter.dao.CodeDao" >
+    <resultMap id="BaseResultMap" type="SysCode">
+        <!-- id属性来映射主键字段 -->
+        <id column="id" property="id" javaType="Integer"/>
+        <!-- result属性映射非主键字段 -->
+        <result column="code_id" property="codeId" javaType="String"/>
+        <result column="code_text" property="codeText" javaType="String"/>
+        <result column="code_parent_id" property="codeParentId" javaType="String"/>
+        <result column="code_key" property="codeKey" javaType="String"/>
+        <result column="code_state" property="codeState" javaType="Integer"/>
+        <result column="add_time" property="addTime" javaType="java.sql.Timestamp"/>
+        <result column="add_by" property="addBy" javaType="String"/>
+        <result column="last_time" property="lastTime" javaType="java.sql.Timestamp"/>
+        <result column="last_by" property="lastBy" javaType="String"/>
+    </resultMap>
+
+    <sql id="BASE_TABLE">
+        sys_code
+    </sql>
+
+    <sql id="BASE_COLUMN">
+        id,
+        code_id,
+        code_text,
+        code_parent_id,
+        code_key,
+        code_state,
+        add_time,
+        add_by,
+        last_time,
+        last_by
+    </sql>
+
+    <insert id="insert" parameterType="com.winter.model.SysCode">
+        INSERT INTO
+        <include refid="BASE_TABLE"/>
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="codeId != null">
+                code_id,
+            </if>
+            <if test="codeText != null">
+                code_text,
+            </if>
+            <if test="codeParentId != null">
+                code_parent_id,
+            </if>
+            <if test="codeKey != null">
+                code_key,
+            </if>
+            <if test="codeState != null">
+                code_state,
+            </if>
+            <if test="addTime != null">
+                add_time,
+            </if>
+            <if test="addBy != null">
+                add_by,
+            </if>
+            <if test="lastTime != null">
+                last_time,
+            </if>
+            <if test="lastBy != null">
+                last_by
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test="codeId != null">
+                #{codeId, jdbcType=VARCHAR},
+            </if>
+            <if test="codeText != null">
+                #{codeText, jdbcType=VARCHAR},
+            </if>
+            <if test="codeParentId != null">
+                #{codeParentId, jdbcType=VARCHAR},
+            </if>
+            <if test="codeKey != null">
+                #{codeKey, jdbcType=VARCHAR},
+            </if>
+            <if test="codeState != null">
+                #{codeState, jdbcType=INTEGER},
+            </if>
+            <if test="addTime != null">
+                #{addTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="addBy != null">
+                #{addBy, jdbcType=VARCHAR},
+            </if>
+            <if test="lastTime != null">
+                #{lastTime, jdbcType=TIMESTAMP},
+            </if>
+            <if test="lastBy != null">
+                #{lastBy, jdbcType=VARCHAR}
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectAllByKey" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="codeId != null and codeId != ''">
+                and code_id = #{codeId, jdbcType=VARCHAR}
+            </if>
+            <if test="codeText != null and codeText != ''">
+                and code_text like concat(concat('%',#{codeText, jdbcType=VARCHAR}),'%')
+            </if>
+            <if test="codeParentId != null and codeParentId != '' and codeParentId != -1">
+                and code_parent_id = #{codeParentId, jdbcType=VARCHAR}
+            </if>
+            <if test="codeParentId == -1">
+                and code_parent_id != #{codeParentId, jdbcType=VARCHAR}
+            </if>
+            <if test="codeKey != null and codeKey != ''">
+                and code_key = #{codeKey, jdbcType=VARCHAR}
+            </if>
+            <if test="codeState != null">
+                and code_state = #{codeState, jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != ''">
+                and add_time =  #{addTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="addBy != null and addBy != ''">
+                and add_by =  #{addBy, jdbcType=VARCHAR}
+            </if>
+            <if test="lastBy != null and lastBy != ''">
+                and last_by = #{lastBy, jdbcType=INTEGER}
+            </if>
+            <if test="lastTime != null and lastTime != ''">
+                and last_time = #{lastTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="beginTime != null and beginTime != '' and endTime!=null and endTime != ''">
+                and add_time between
+                date_format(#{beginTime}, '%Y-%c-%d 00:00:01')
+                and
+                date_format(#{endTime}, '%Y-%c-%d 23:59:59')
+            </if>
+        </where>
+    </select>
+
+    <select id="selectOneByKey" resultMap="BaseResultMap" parameterType="java.util.HashMap" >
+        SELECT
+        <include refid="BASE_COLUMN"/>
+        FROM
+        <include refid="BASE_TABLE"/>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="codeId != null and codeId != ''">
+                and code_id = #{codeId, jdbcType=VARCHAR}
+            </if>
+            <if test="codeText != null and codeText != ''">
+                and code_text = #{codeText, jdbcType=VARCHAR}
+            </if>
+            <if test="codeParentId != null and codeParentId != ''">
+                and code_parent_id = #{codeParentId, jdbcType=VARCHAR}
+            </if>
+            <if test="codeKey != null and codeKey != ''">
+                and code_key = #{codeKey, jdbcType=VARCHAR}
+            </if>
+            <if test="codeState != null">
+                and code_state = #{codeState, jdbcType=INTEGER}
+            </if>
+            <if test="addTime != null and addTime != ''">
+                and add_time =  #{addTime, jdbcType=TIMESTAMP}
+            </if>
+            <if test="addBy != null and addBy != ''">
+                and add_by =  #{addBy, jdbcType=VARCHAR}
+            </if>
+            <if test="lastBy != null and lastBy != ''">
+                and last_by = #{lastBy, jdbcType=INTEGER}
+            </if>
+            <if test="lastTime != null and lastTime != ''">
+                and last_time = #{lastTime, jdbcType=TIMESTAMP}
+            </if>
+        </where>
+    </select>
+
+
+    <update id="updateOneByKey" parameterType="com.winter.model.SysCode" >
+        update
+        <include refid="BASE_TABLE"/>
+        <set >
+            <if test="codeText != null">
+                code_text = #{codeText, jdbcType=VARCHAR},
+            </if>
+            <if test="codeParentId != null">
+                code_parent_id = #{codeParentId, jdbcType=VARCHAR},
+            </if>
+            <if test="codeKey != null">
+                code_key = #{codeKey, jdbcType=VARCHAR},
+            </if>
+            <if test="codeState != null">
+                code_state = #{codeState, jdbcType=INTEGER},
+            </if>
+            <if test="lastBy != null">
+                last_by = #{lastBy, jdbcType=INTEGER},
+            </if>
+            <if test="lastTime != null">
+                last_time = #{lastTime, jdbcType=TIMESTAMP},
+            </if>
+
+        </set>
+        <where>
+            <if test="id != null">
+                id = #{id, jdbcType=INTEGER}
+            </if>
+            <if test="codeId != null">
+                and code_id = #{codeId, jdbcType=VARCHAR}
+            </if>
+        </where>
+    </update>
+
+
+
+    <!--批量更新-->
+    <update id="updateBatch"  parameterType="java.util.List">
+        <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update
+            <include refid="BASE_TABLE"/>
+            <set >
+                <if test="item.codeText != null">
+                    code_text = #{item.codeText, jdbcType=VARCHAR},
+                </if>
+                <if test="item.codeParentId != null">
+                    code_parent_id = #{item.codeParentId, jdbcType=VARCHAR},
+                </if>
+                <if test="item.codeKey != null">
+                    code_key = #{item.codeKey, jdbcType=VARCHAR},
+                </if>
+                <if test="item.codeState != null">
+                    code_state = #{item.codeState, jdbcType=INTEGER},
+                </if>
+                <if test="item.lastBy != null">
+                    last_by = #{item.lastBy, jdbcType=INTEGER},
+                </if>
+                <if test="item.lastTime != null">
+                    last_time = #{item.lastTime, jdbcType=TIMESTAMP},
+                </if>
+            </set>
+            <where>
+                <if test="item.id != null">
+                    id = #{item.id, jdbcType=INTEGER}
+                </if>
+                <if test="item.codeId != null">
+                    and code_id = #{item.codeId, jdbcType=VARCHAR}
+                </if>
+            </where>
+        </foreach>
+    </update>
+</mapper>

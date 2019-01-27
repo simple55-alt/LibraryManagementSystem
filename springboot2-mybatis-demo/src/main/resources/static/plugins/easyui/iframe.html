@@ -1,0 +1,126 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+       xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="utf-8"></meta>
+    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" type="text/css" href="css/jquery.dialog.css" />
+    <link rel="stylesheet" href="css/index.css" />
+
+    <title>教师成长档案管理系统</title>
+    <style type="text/css">
+        .aa
+        {
+            height: 200px;
+            width: 200px;
+            background-color: blue;
+            position: relative;
+            top: 300px;
+            left: 400px;
+        }
+        .white_content
+        {
+            display: none;
+            position: absolute;
+            top: 30%;
+            left: 38%;
+            width: 320px;
+            height: 220px;
+            padding: 16px;
+            /*border: 16px solid orange; */
+            background-color: #2a83cf;
+            z-index:1002;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div id="container">
+    <div id="hd">
+        <div class="hd-wrap ue-clear">
+            <div class="top-light"></div>
+            <h1 class="logo"></h1>
+            <div class="login-info ue-clear">
+                <div class="welcome ue-clear">
+                    <span>欢迎您,</span><a href="javascript:;" class="user-name">Admin</a></div>
+            </div>
+            <div class="toolbar ue-clear">
+                <a href="javascript:;" class="home-btn" onclick="document.getElementById('light').style.display='block';document.getElementById('fade').style.display='block'" >改密</a>
+                <a href="javascript:;" class="quit-btn exit" ></a>
+            </div>
+        </div>
+    </div>
+    <div id="bd">
+        <div class="wrap ue-clear">
+            <div class="sidebar">
+                <h2 class="sidebar-header"><p>功能面板</p></h2>
+                <ul class="nav">
+                    <li class="agency">
+                        <div class="nav-header"><a href="javascript:;" class="ue-clear"><span>我的</span><i class="icon"></i></a></div>
+                        <ul class="subnav">
+                            <li><a href="javascript:;" date-src="/getteacherinfo">个人信息</a></li>
+                            <li><a href="javascript:;" date-src="/getenrolproject">开始报名</a></li>
+                            <li><a href="javascript:;" date-src="/myparticipatein">我的参与</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="content">
+                <iframe src="http://ctld.nwsuaf.edu.cn/zxgk/gzzz/index.htm" id="iframe" width="100%" height="100%" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="exitDialog">
+    <div class="dialog-content">
+        <div class="ui-dialog-icon">
+        </div>
+        <div class="ui-dialog-text">
+            <p class="dialog-content">你确定要退出系统？</p>
+            <p class="tips">如果是请点击“确定”，否则点“取消”</p>
+
+            <div class="buttons">
+                <input type="button" class="button long2 ok" value="确定" />
+                <input type="button" class="button long2 normal" value="取消" />
+            </div>
+        </div>
+
+    </div>
+</div>
+<div id="light" class="white_content">
+
+    <form action="modifypassword" method="post">
+        <table align="center" width="280px" style="height:180px; text-align:center;">
+            <tr>
+                <td >初始密码：</td>
+                <td><input type="password" name="oldpassword"></input></td>
+            </tr>
+
+            <tr>
+                <td>新密码：</td>
+                <td><input type="password" name="newpassword1"></input></td>
+            </tr>
+
+            <tr>
+                <td>再次输入：</td>
+                <td><input type="password" name="newpassword2"></input></td>
+            </tr>
+            <tr>
+                <td style="text-align:center;"><input type="submit" name="" value="确定" align="center" onclick="document.getElementById('light').style.display='block';"></input></td>
+                <td style="text-align:center;"><input type="button" name="" value="关闭" onclick="document.getElementById('light').style.display='none';"></input></td>
+            </tr>
+        </table>
+
+    </form>
+
+</div>
+</body>
+<script type="text/javascript" src="js/jquery.js"></script>
+<script type="text/javascript" src="js/common.js"></script>
+<script type="text/javascript" src="js/core.js"></script>
+<script type="text/javascript" src="js/jquery.dialog.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+
+</html>
